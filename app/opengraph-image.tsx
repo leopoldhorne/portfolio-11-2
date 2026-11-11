@@ -42,7 +42,7 @@ export default function OpengraphImage() {
         >
           <span>GTM Operations · Air Labs</span>
           <span>Ex-JPMorgan IB</span>
-          <span>Cornell</span>
+          <span>RevOps Consulting</span>
           <span>Builder of ScaleCue</span>
         </div>
       </div>

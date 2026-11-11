@@ -52,6 +52,12 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
             {study.title}
           </h3>
           <p className="mt-3 text-sm text-ink-soft">{study.context}</p>
+          {study.metric && (
+            <p className="mt-6 border-l-2 border-accent pl-4">
+              <span className="block font-display text-4xl leading-none text-accent">{study.metric.value}</span>
+              <span className="mt-1.5 block text-sm text-ink-soft">{study.metric.label}</span>
+            </p>
+          )}
           <div className="mt-6 flex flex-wrap gap-2">
             {study.tags.map((tag) => (
               <Tag key={tag}>{tag}</Tag>
@@ -106,7 +112,7 @@ export function CaseStudies() {
       index="02"
       label="Selected work"
       title="Systems I've designed and built."
-      intro="Selected GTM systems I've architected at Air Labs. Each one started as a revenue problem and ended as infrastructure the team runs on. Descriptions stay at the architecture level, with no confidential details, code or customer data."
+      intro="Selected GTM systems I've architected and built, including client work through my RevOps practice, Horne Automation Ops. Each one started as a revenue problem and ended as infrastructure a team runs on. Descriptions stay at the architecture level, with no confidential details, code or customer data."
     >
       <div className="grid gap-6">
         {caseStudies.map((study, i) => (

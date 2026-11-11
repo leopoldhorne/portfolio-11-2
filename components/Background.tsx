@@ -28,11 +28,15 @@ export function Background() {
             {entry.highlights && (
               <div className="mt-5 md:col-span-9 md:col-start-4 md:mt-2">
                 <h4 className="eyebrow">{entry.highlightsLabel}</h4>
-                <ul className="mt-3 grid gap-px overflow-hidden rounded-xl border border-rule bg-rule sm:grid-cols-2">
+                <ul
+                  className={`mt-3 grid gap-px overflow-hidden rounded-xl border border-rule bg-rule ${
+                    entry.highlights.length > 1 ? "sm:grid-cols-2" : ""
+                  }`}
+                >
                   {entry.highlights.map((h) => (
                     <li key={h.parties} className="flex items-baseline justify-between gap-4 bg-paper px-4 py-3">
                       <span className="text-[0.95rem] text-ink">{h.parties}</span>
-                      <span className="font-mono text-sm text-accent">{h.value}</span>
+                      <span className="whitespace-nowrap font-mono text-sm text-accent">{h.value}</span>
                     </li>
                   ))}
                 </ul>
