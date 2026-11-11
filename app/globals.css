@@ -1,37 +1,177 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---------- Design tokens ---------- */
+@theme {
+  --color-paper: #f6f3ec;        /* warm off-white background */
+  --color-paper-deep: #ede8de;   /* subtle panels */
+  --color-ink: #1e1c19;          /* charcoal text */
+  --color-ink-soft: #57524a;     /* secondary text */
+  --color-ink-faint: #716b61;    /* tertiary text (AA on paper) */
+  --color-rule: #dcd5c8;         /* dividers */
+  --color-accent: #2d5b4c;       /* the one understated accent */
+  --color-night: #151614;        /* ScaleCue feature panel */
+  --color-signal: #34c46a;       /* ScaleCue brand green, used only inside its panel */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-newsreader), ui-serif, Georgia, serif;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
-
-@layer components {
-  .wrapper {
-    @apply max-w-6xl p-10 mx-auto flex flex-col gap-5 pb-10  text-slate-900;
-  }
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
 }
 
+::selection {
+  background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
 
-html {
-  scroll-behavior: smooth;
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.font-display {
+  font-optical-sizing: auto;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  /* Visible marker for unverified content. See content/site.ts. */
+  .placeholder {
+    display: inline;
+    padding: 0.05em 0.35em;
+    border: 1px dashed #b48a1f;
+    border-radius: 4px;
+    background: #f8ecc4;
+    color: #5e4500;
+    font-size: 0.9em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* ----- Conceptual flow diagram ----- */
+  .flow {
+    --flow-gap: 1.25rem;
+    display: grid;
+    gap: var(--flow-gap);
+  }
+  .flow-step {
+    position: relative;
+  }
+  .flow-node {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    height: 100%;
+    padding: 0.8rem 0.95rem;
+    border: 1px solid var(--color-rule);
+    border-radius: 10px;
+    background: var(--color-paper);
+    transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  .flow-node--start {
+    border-style: dashed;
+  }
+  .flow-node--end {
+    border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 8%, var(--color-paper));
+  }
+  .flow-link {
+    position: absolute;
+    left: 1.4rem;
+    top: 100%;
+    width: 1px;
+    height: var(--flow-gap);
+    background: var(--color-ink-faint);
+  }
+  .flow-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+    border: 3.5px solid transparent;
+    border-top: 5px solid var(--color-ink-faint);
+    border-bottom: 0;
+  }
+  @media (min-width: 768px) {
+    .flow {
+      --flow-gap: 1.75rem;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+    }
+    .flow-link {
+      left: 100%;
+      top: 50%;
+      width: var(--flow-gap);
+      height: 1px;
+    }
+    .flow-link::after {
+      top: -3px;
+      right: 0;
+      bottom: auto;
+      left: auto;
+      border: 3.5px solid transparent;
+      border-left: 5px solid var(--color-ink-faint);
+      border-right: 0;
+    }
+  }
+  article:hover .flow-node {
+    border-color: color-mix(in srgb, var(--color-ink) 22%, transparent);
+  }
+  article:hover .flow-node--end {
+    border-color: var(--color-accent);
+  }
+
+  /* ----- Restrained entrance ----- */
+  .reveal {
+    animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .reveal-delay {
+    animation-delay: 0.18s;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
